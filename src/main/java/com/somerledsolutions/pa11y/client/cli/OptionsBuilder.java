@@ -9,16 +9,11 @@ public class OptionsBuilder {
     public static Options buildOptions() {
         Options options = new Options();
         addHelp(options);
-
         return options;
     }
 
     private static void addHelp(Options options) {
-        Option help = Option.builder()
-                .argName("help")
-                .longOpt("help")
-                .desc("print this message")
-                .build();
+        Option help = new Option("help", "print this message");
         options.addOption(help);
     }
 }

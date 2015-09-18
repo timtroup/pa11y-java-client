@@ -18,7 +18,7 @@ public class Application implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     public static void main(String args[]) {
-        SpringApplication.run(Application.class);
+        SpringApplication.run(Application.class, args);
     }
 
     @Override
@@ -30,18 +30,15 @@ public class Application implements CommandLineRunner {
             // parse the command line arguments
             CommandLine line = parser.parse(options, strings);
 
-            // validate that block-size has been set
+            // validate that help has been set
             if( line.hasOption( "help" ) ) {
-                System.out.println( line.getOptionValue( "help" ) );
+                // automatically generate the help statement
+                HelpFormatter formatter = new HelpFormatter();
+                formatter.printHelp("pa11y-java-client", options);
             }
         } catch( ParseException exp ) {
             System.out.println( "Unexpected exception:" + exp.getMessage() );
         }
-
-        client.setHost("http://0.0.0.0:3000");
-//        client.getTask("55f947927d6a39bf01e2d30e", false);
-
-        client.createTask("google4", "http://www.google.com", "WCAG2AAA");
     }
 
 }
