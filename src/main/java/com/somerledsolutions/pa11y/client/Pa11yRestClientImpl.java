@@ -46,7 +46,7 @@ public class Pa11yRestClientImpl implements Pa11yRestClient {
         task.setStandard(standard);
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("host", host);
+        params.put("host", url);
 
         restTemplate.postForObject(createTaskUrl, task, Task.class, params);
     }

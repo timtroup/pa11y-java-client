@@ -9,6 +9,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.logging.Level;
+
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 
@@ -23,22 +25,48 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
+
+        if (shouldPrintHelp(strings)) {
+            printHelp();
+        } else {
+            processPa11yCommandLine(strings);
+        }
+    }
+
+    private boolean shouldPrintHelp(String[] strings) throws ParseException {
         CommandLineParser parser = new DefaultParser();
-        Options options = OptionsBuilder.buildOptions();
+        Options options = OptionsBuilder.buildHelpOptions();
+
+        CommandLine cl = parser.parse(options, strings, true);
+        return cl.hasOption(OptionsBuilder.HELP_OPT);
+    }
+
+    private void processPa11yCommandLine(String[] strings) {
+
+        Options options = OptionsBuilder.buildPa11yOptions();
+
+        CommandLineParser parser = new DefaultParser();
 
         try {
             // parse the command line arguments
-            CommandLine line = parser.parse(options, strings);
+            CommandLine cl = parser.parse(options, strings);
 
-            // validate that help has been set
-            if( line.hasOption( "help" ) ) {
-                // automatically generate the help statement
-                HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("pa11y-java-client", options);
+            if (cl.hasOption(OptionsBuilder.CREATE_OPT)) {
+                client.createTask(cl.getOptionValue(OptionsBuilder.NAME_OPT),
+                        cl.getOptionValue(OptionsBuilder.HOST_OPT),
+                        cl.getOptionValue(OptionsBuilder.STD_OPT));
             }
-        } catch( ParseException exp ) {
-            System.out.println( "Unexpected exception:" + exp.getMessage() );
+        } catch (ParseException e) {
+            log.error("Failed to parse comand line properties", e);
+            printHelp();
         }
+    }
+
+    private void printHelp() {
+        // automatically generate the help statement
+        Options options = OptionsBuilder.getAllOptions();
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("pa11y-java-client", options);
     }
 
 }
