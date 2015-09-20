@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.util.List;
@@ -61,15 +61,25 @@ public class Application implements CommandLineRunner {
 
             if (cl.hasOption(OptionsBuilder.CREATE_OPT)) {
                 createTask(cl);
-            }
-            if (cl.hasOption(OptionsBuilder.LIST_OPT)) {
+            } else if (cl.hasOption(OptionsBuilder.LIST_OPT)) {
                 printListOfTasks(cl);
+            } else if (cl.hasOption(OptionsBuilder.RUN_OPT)) {
+                runTask(cl);
             }
         } catch (ParseException e) {
             log.error("Failed to parse comand line properties", e);
             printHelp();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void runTask(CommandLine cl) {
+
+        if(optionsValidator.validateRunOptions(cl)) {
+            HttpStatus httpStatus = client.runTask(cl.getOptionValue(OptionsBuilder.TID_OPT),
+                    cl.getOptionValue(OptionsBuilder.URL_OPT));
+            System.out.println(httpStatus.getReasonPhrase());
         }
     }
 

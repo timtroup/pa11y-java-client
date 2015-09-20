@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -67,6 +68,25 @@ public class ApplicationTest {
 
         testee.run("-l");
         verify(client, times(0)).getTasks("http://0.0.0.0:3000", false);
+    }
+
+    @Test
+    public void shouldCallRunTaskOnClientWithCorrectArguments() throws Exception {
+
+        when(optionsValidator.validateRunOptions(any(CommandLine.class))).thenReturn(true);
+        when(client.runTask("someId", "http://0.0.0.0:3000")).thenReturn(HttpStatus.ACCEPTED);
+
+        testee.run("-r", "-tid", "someId", "-u", "http://0.0.0.0:3000");
+        verify(client, times(1)).runTask("someId", "http://0.0.0.0:3000");
+    }
+
+    @Test
+    public void shouldNotCallRunTaskOnClientWhenValidationFails() throws Exception {
+
+        when(optionsValidator.validateRunOptions(any(CommandLine.class))).thenReturn(false);
+
+        testee.run("-r", "-tid", "someId", "-u", "http://0.0.0.0:3000");
+        verify(client, times(0)).runTask("someId", "http://0.0.0.0:3000");
     }
 
 }

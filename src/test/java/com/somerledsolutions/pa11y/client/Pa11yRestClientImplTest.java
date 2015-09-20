@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -67,6 +69,19 @@ public class Pa11yRestClientImplTest {
 
     @Test
     public void testRunTask() throws Exception {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("host", "HOST");
+        params.put("id", "taskId");
+
+        ResponseEntity<Object> entity = new ResponseEntity<Object>(HttpStatus.ACCEPTED);
+        when(restTemplate.postForEntity("{host}/tasks/{id}/run", null, null, params)).thenReturn(entity);
+
+        HttpStatus status = testee.runTask("taskId", "HOST");
+
+        verify(restTemplate, times(1)).postForEntity("{host}/tasks/{id}/run", null, null, params);
+
+        assertSame(entity.getStatusCode(), status);
 
     }
 

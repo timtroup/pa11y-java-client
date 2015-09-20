@@ -89,4 +89,34 @@ public class OptionsValidatorTest {
 
         assertFalse(testee.validateListOptions(mockCommandLine));
     }
+
+    @Test
+    public void testValidateRunOptionsWithTaskIdAndUrl() throws Exception {
+
+        CommandLine mockCommandLine = mock(CommandLine.class);
+        when(mockCommandLine.hasOption("tid")).thenReturn(true);
+        when(mockCommandLine.hasOption("u")).thenReturn(true);
+
+        assertTrue(testee.validateRunOptions(mockCommandLine));
+    }
+
+    @Test
+    public void testValidateRunOptionsWithMissingTaskIdOPtion() throws Exception {
+
+        CommandLine mockCommandLine = mock(CommandLine.class);
+        when(mockCommandLine.hasOption("tid")).thenReturn(false);
+        when(mockCommandLine.hasOption("u")).thenReturn(true);
+
+        assertFalse(testee.validateRunOptions(mockCommandLine));
+    }
+
+    @Test
+    public void testValidateRunOptionsWithMissingUrlOPtion() throws Exception {
+
+        CommandLine mockCommandLine = mock(CommandLine.class);
+        when(mockCommandLine.hasOption("tid")).thenReturn(true);
+        when(mockCommandLine.hasOption("u")).thenReturn(false);
+
+        assertFalse(testee.validateRunOptions(mockCommandLine));
+    }
 }

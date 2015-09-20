@@ -1,6 +1,7 @@
 package com.somerledsolutions.pa11y.client;
 
 import com.somerledsolutions.pa11y.client.model.Task;
+import org.springframework.http.HttpStatus;
 
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,7 @@ public interface Pa11yRestClient {
      * @param url      The URL of the new task.
      * @param standard The accessibility standard to test the URL against. One of Section508, WCAG2A, WCAG2AA, WCAG2AAA
      */
-    void createTask(String name, String url, String standard);
+    Task createTask(String name, String url, String standard);
 
     /**
      * Get all of the tasks in the application
@@ -54,9 +55,9 @@ public interface Pa11yRestClient {
     /**
      * Run a task by ID, generating new results
      *
-     * @param id the ID of the task to run
+     * @param taskId the ID of the task to run
      */
-    void runTask(String id);
+    HttpStatus runTask(String taskId, String url);
 
     /**
      * Get results for a single task by ID.

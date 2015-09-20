@@ -25,4 +25,7 @@ public class OptionsValidator {
         return commandLine.hasOption("u");
     }
 
+    public boolean validateRunOptions(CommandLine commandLine) {
+        return commandLine.hasOption("u") && commandLine.hasOption("tid");
+    }
 }

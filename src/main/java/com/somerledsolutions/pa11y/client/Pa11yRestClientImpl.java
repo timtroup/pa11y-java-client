@@ -4,6 +4,8 @@ import com.somerledsolutions.pa11y.client.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,6 +20,7 @@ public class Pa11yRestClientImpl implements Pa11yRestClient {
     private final String getTasksUrl = "{host}/tasks";
     private final String getTasksResultsUrl = "{host}/tasks/results";
     private final String getTaskUrl = "{host}/tasks/{id}?lastres={lastres}";
+    private final String runTaskUrl = "{host}/tasks/{id}/run";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -26,7 +29,7 @@ public class Pa11yRestClientImpl implements Pa11yRestClient {
 
     }
 
-    public void createTask(String name, String url, String standard) {
+    public Task createTask(String name, String url, String standard) {
 
         Task task = new Task();
         task.setName(name);
@@ -36,7 +39,7 @@ public class Pa11yRestClientImpl implements Pa11yRestClient {
         Map<String, String> params = new HashMap<String, String>();
         params.put("host", url);
 
-        restTemplate.postForObject(createTaskUrl, task, Task.class, params);
+        return restTemplate.postForObject(createTaskUrl, task, Task.class, params);
     }
 
     @Override
@@ -73,8 +76,14 @@ public class Pa11yRestClientImpl implements Pa11yRestClient {
     }
 
     @Override
-    public void runTask(String id) {
+    public HttpStatus runTask(String taskId, String url) {
 
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("host", url);
+        params.put("id", taskId);
+
+        ResponseEntity<Object> objectResponseEntity = restTemplate.postForEntity(runTaskUrl, null, null, params);
+        return objectResponseEntity.getStatusCode();
     }
 
     @Override

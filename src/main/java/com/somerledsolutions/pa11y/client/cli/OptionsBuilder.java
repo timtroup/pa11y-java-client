@@ -18,6 +18,10 @@ public class OptionsBuilder {
     public static final String URL_LONG_OPT = "url";
     public static final String STD_OPT = "s";
     public static final String STD_LONG_OPT = "standard";
+    public static final String RUN_OPT = "r";
+    public static final String RUN_LONG_OPT = "run";
+    public static final String TID_OPT = "tid";
+    public static final String TID_LONG_OPT = "taskid";
 
     public static Options buildHelpOptions() {
         Options options = new Options();
@@ -32,12 +36,14 @@ public class OptionsBuilder {
         OptionGroup mutuallyExclusiveOptions = new OptionGroup();
         mutuallyExclusiveOptions.addOption(getCreateTaskOption());
         mutuallyExclusiveOptions.addOption(getListTasksOption());
+        mutuallyExclusiveOptions.addOption(getRunOption());
 
         options.addOptionGroup(mutuallyExclusiveOptions);
         options.addOption(getNameOption());
         options.addOption(getUrlOption());
         options.addOption(getStandardOption());
         options.addOption(getLastResultOption());
+        options.addOption(getTaskIdOption());
 
         return options;
     }
@@ -120,5 +126,23 @@ public class OptionsBuilder {
         }
 
         return allOptions;
+    }
+
+    private static Option getTaskIdOption() {
+        return Option.builder(TID_OPT)
+                .argName("Task ID")
+                .longOpt(TID_LONG_OPT)
+                .desc("The ID of the task")
+                .hasArg()
+                .numberOfArgs(1)
+                .build();
+    }
+
+    private static Option getRunOption() {
+        return Option.builder(RUN_OPT)
+                .argName("Run")
+                .longOpt(RUN_LONG_OPT)
+                .desc("Run a task by ID, generating new results")
+                .build();
     }
 }

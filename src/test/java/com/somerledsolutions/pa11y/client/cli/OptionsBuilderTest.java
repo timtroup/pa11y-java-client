@@ -26,7 +26,7 @@ public class OptionsBuilderTest {
     public void testBuildPa11yOptions() throws Exception {
         Options options = OptionsBuilder.buildPa11yOptions();
 
-        assertEquals(6, options.getOptions().size());
+        assertEquals(8, options.getOptions().size());
 
         assertPa11yOptions(options);
 
@@ -34,13 +34,14 @@ public class OptionsBuilderTest {
         Collection<String> optionGroupNames = optionGroup.getNames();
         assertTrue(optionGroupNames.contains("c"));
         assertTrue(optionGroupNames.contains("l"));
+        assertTrue(optionGroupNames.contains("r"));
     }
 
     @Test
     public void testGetAllOptions() throws Exception {
         Options options = OptionsBuilder.getAllOptions();
 
-        assertEquals(7, options.getOptions().size());
+        assertEquals(9, options.getOptions().size());
 
         assertHelpOption(options);
         assertPa11yOptions(options);
@@ -61,6 +62,8 @@ public class OptionsBuilderTest {
         assertUrlOption(options);
         assertStandardOption(options);
         assertLastResultOption(options);
+        assertTaskIdOption(options);
+        assertRunOption(options);
     }
 
     private void assertCreateOption(Options options) {
@@ -109,5 +112,22 @@ public class OptionsBuilderTest {
         assertEquals("Last result", createOption.getArgName());
         assertEquals("lastres", createOption.getLongOpt());
         assertEquals("Include the last_result property in the output", createOption.getDescription());
+    }
+
+    private void assertTaskIdOption(Options options) {
+        Option taskIdOption = options.getOption("tid");
+        assertEquals("tid", taskIdOption.getOpt());
+        assertEquals("Task ID", taskIdOption.getArgName());
+        assertEquals("taskid", taskIdOption.getLongOpt());
+        assertEquals("The ID of the task", taskIdOption.getDescription());
+        assertTrue(taskIdOption.hasArg());
+    }
+
+    private void assertRunOption(Options options) {
+        Option taskIdOption = options.getOption("r");
+        assertEquals("r", taskIdOption.getOpt());
+        assertEquals("Run", taskIdOption.getArgName());
+        assertEquals("run", taskIdOption.getLongOpt());
+        assertEquals("Run a task by ID, generating new results", taskIdOption.getDescription());
     }
 }
