@@ -1,6 +1,7 @@
 package com.somerledsolutions.pa11y.client;
 
 import com.somerledsolutions.pa11y.client.cli.OptionsBuilder;
+import com.somerledsolutions.pa11y.client.validation.OptionsValidator;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,13 +53,24 @@ public class Application implements CommandLineRunner {
             CommandLine cl = parser.parse(options, strings);
 
             if (cl.hasOption(OptionsBuilder.CREATE_OPT)) {
-                client.createTask(cl.getOptionValue(OptionsBuilder.NAME_OPT),
-                        cl.getOptionValue(OptionsBuilder.HOST_OPT),
-                        cl.getOptionValue(OptionsBuilder.STD_OPT));
+                createTask(cl);
             }
         } catch (ParseException e) {
             log.error("Failed to parse comand line properties", e);
             printHelp();
+        }
+    }
+
+    private void createTask(CommandLine cl) throws ParseException {
+        OptionsValidator validator = new OptionsValidator();
+
+        String accessibilityStandardValue = cl.getOptionValue(OptionsBuilder.STD_OPT);
+        if(validator.isAccessiblityStandardValid(accessibilityStandardValue)) {
+            client.createTask(cl.getOptionValue(OptionsBuilder.NAME_OPT),
+                    cl.getOptionValue(OptionsBuilder.HOST_OPT),
+                    accessibilityStandardValue);
+        } else {
+            throw new ParseException("Accessibility standard: " + accessibilityStandardValue + " is not valid. Must be one of Section508, WCAG2A, WCAG2AA, WCAG2AAA");
         }
     }
 

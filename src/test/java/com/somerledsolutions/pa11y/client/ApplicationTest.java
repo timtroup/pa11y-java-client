@@ -30,4 +30,11 @@ public class ApplicationTest {
         verify(client, times(1)).createTask("name of task", "http://0.0.0.0:3000", "WCAG2AAA");
     }
 
+    @Test
+    public void shouldNotCallCreateTaskOnClientWhenStandardIsNotRecognised() throws Exception {
+
+        testee.run("-c", "-n", "name of task", "-h", "http://0.0.0.0:3000", "-s", "IAmNotAStandard");
+        verify(client, times(0)).createTask("name of task", "http://0.0.0.0:3000", "IAmNotAStandard");
+    }
+
 }
