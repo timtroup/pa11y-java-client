@@ -3,6 +3,7 @@ package com.somerledsolutions.pa11y.client;
 import com.somerledsolutions.pa11y.client.model.Task;
 
 import java.util.Date;
+import java.util.List;
 
 public interface Pa11yRestClient {
 
@@ -13,14 +14,14 @@ public interface Pa11yRestClient {
      * @param url      The URL of the new task.
      * @param standard The accessibility standard to test the URL against. One of Section508, WCAG2A, WCAG2AA, WCAG2AAA
      */
-    public void createTask(String name, String url, String standard);
+    void createTask(String name, String url, String standard);
 
     /**
      * Get all of the tasks in the application
      *
      * @param lastres Whether to include the last_result property in the output
      */
-    public void getTasks(boolean lastres);
+    List<Task> getTasks(String url, boolean lastres);
 
     /**
      * Get results for all of the tasks in the application.
@@ -30,7 +31,7 @@ public interface Pa11yRestClient {
      * @param full Whether to include full results in the response. If this is not present, then only
      *             error/warning/notice counts will be included
      */
-    public void getTasksResults(Date from, Date to, boolean full);
+    void getTasksResults(Date from, Date to, boolean full);
 
     /**
      * Get a single task by ID
@@ -39,7 +40,7 @@ public interface Pa11yRestClient {
      * @param lastres Whether to include the last_result property in the output
      * @return the task found
      */
-    public Task getTask(String taskId, boolean lastres);
+    Task getTask(String taskId, String url, boolean lastres);
 
     //    public void editTask(String taskId, String name);
 
@@ -48,14 +49,14 @@ public interface Pa11yRestClient {
      *
      * @param id the ID of the task to delete
      */
-    public void deleteTask(String id);
+    void deleteTask(String id);
 
     /**
      * Run a task by ID, generating new results
      *
      * @param id the ID of the task to run
      */
-    public void runTask(String id);
+    void runTask(String id);
 
     /**
      * Get results for a single task by ID.
@@ -66,7 +67,7 @@ public interface Pa11yRestClient {
      * @param full   Whether to include full results in the response. If this is not present, then only
      *               error/warning/notice counts will be included. Defaults to false.
      */
-    public void getTaskResults(String taskId, Date from, Date to, boolean full);
+    void getTaskResults(String taskId, Date from, Date to, boolean full);
 
     /**
      * Get a single result by ID.
@@ -76,8 +77,6 @@ public interface Pa11yRestClient {
      * @param full     Whether to include full results in the response. If this is not present, then only
      *                 error/warning/notice counts will be included. Defaults to false.
      */
-    public void getTaskResult(String taskId, String resultId, boolean full);
+    void getTaskResult(String taskId, String resultId, boolean full);
 
-
-    void setHost(String s);
 }

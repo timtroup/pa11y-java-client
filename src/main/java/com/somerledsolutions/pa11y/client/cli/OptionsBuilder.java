@@ -14,8 +14,8 @@ public class OptionsBuilder {
     public static final String LIST_LONG_OPT = "list";
     public static final String NAME_OPT = "n";
     public static final String NAME_LONG_OPT = "name";
-    public static final String HOST_OPT = "h";
-    public static final String HOST_LONG_OPT = "host";
+    public static final String URL_OPT = "u";
+    public static final String URL_LONG_OPT = "url";
     public static final String STD_OPT = "s";
     public static final String STD_LONG_OPT = "standard";
 
@@ -35,7 +35,7 @@ public class OptionsBuilder {
 
         options.addOptionGroup(mutuallyExclusiveOptions);
         options.addOption(getNameOption());
-        options.addOption(getHostOption());
+        options.addOption(getUrlOption());
         options.addOption(getStandardOption());
         options.addOption(getLastResultOption());
 
@@ -71,16 +71,15 @@ public class OptionsBuilder {
                 .argName("Name")
                 .longOpt(NAME_LONG_OPT)
                 .desc("The name of the task")
-                .required()
                 .hasArg()
                 .numberOfArgs(1)
                 .build();
     }
 
-    private static Option getHostOption() {
-        return Option.builder(HOST_OPT)
-                .argName("Host")
-                .longOpt(HOST_LONG_OPT)
+    private static Option getUrlOption() {
+        return Option.builder(URL_OPT)
+                .argName("URL")
+                .longOpt(URL_LONG_OPT)
                 .desc("The base URL of the pa11y webservice")
                 .required()
                 .hasArg()
@@ -93,7 +92,6 @@ public class OptionsBuilder {
                 .argName("Accessibility standard")
                 .longOpt(STD_LONG_OPT)
                 .desc("The accessibility standard to test the URL against. Must be one of Section508, WCAG2A, WCAG2AA, WCAG2AAA")
-                .required()
                 .hasArg()
                 .numberOfArgs(1)
                 .build();

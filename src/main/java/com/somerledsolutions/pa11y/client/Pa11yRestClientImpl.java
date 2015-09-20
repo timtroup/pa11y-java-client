@@ -7,16 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class Pa11yRestClientImpl implements Pa11yRestClient {
 
     private static final Logger log = LoggerFactory.getLogger(Pa11yRestClientImpl.class);
-
-    private String host;
 
     private final String createTaskUrl = "{host}/tasks";
     private final String getTasksUrl = "{host}/tasks";
@@ -26,16 +22,8 @@ public class Pa11yRestClientImpl implements Pa11yRestClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    public Pa11yRestClientImpl(String h) {
-        host = h;
-    }
-
     public Pa11yRestClientImpl() {
 
-    }
-
-    public void setHost(String h) {
-        host = h;
     }
 
     public void createTask(String name, String url, String standard) {
@@ -52,7 +40,12 @@ public class Pa11yRestClientImpl implements Pa11yRestClient {
     }
 
     @Override
-    public void getTasks(boolean lastres) {
+    public List<Task> getTasks(String url, boolean lastres) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("host", url);
+
+        return Arrays.asList(restTemplate.getForObject(getTasksUrl, Task[].class, params));
 
     }
 
@@ -62,10 +55,10 @@ public class Pa11yRestClientImpl implements Pa11yRestClient {
     }
 
     @Override
-    public Task getTask(String taskId, boolean lastres) {
+    public Task getTask(String taskId, String url, boolean lastres) {
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("host", host);
+        params.put("host", url);
         params.put("id", taskId);
         params.put("lastres", String.valueOf(lastres));
 

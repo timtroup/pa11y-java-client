@@ -24,7 +24,7 @@ public class Pa11yRestClientImplTest {
     private RestTemplate restTemplate;
 
     @InjectMocks
-    private Pa11yRestClientImpl testee = new Pa11yRestClientImpl("HOST");
+    private Pa11yRestClientImpl testee = new Pa11yRestClientImpl();
 
     @Test
     public void testCreateTask() throws Exception {
@@ -52,7 +52,7 @@ public class Pa11yRestClientImplTest {
         Task task = new Task();
         when(restTemplate.getForObject(eq("{host}/tasks/{id}?lastres={lastres}"), eq(Task.class), eq(params))).thenReturn(task);
 
-        Task actualTask = testee.getTask("taskId", false);
+        Task actualTask = testee.getTask("taskId", "HOST", false);
 
         verify(restTemplate, times(1)).getForObject(eq("{host}/tasks/{id}?lastres={lastres}"), eq(Task.class), eq(params));
 
