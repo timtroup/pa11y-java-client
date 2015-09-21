@@ -33,13 +33,21 @@ import java.util.List;
 
 public class Pa11yPrinter {
 
+    private ObjectMapper mapper;
+
+    public Pa11yPrinter() {
+        mapper = new ObjectMapper();
+    }
+
     public void printTasks(List<Task> tasks, OutputStream os) throws IOException {
 
-        ObjectMapper mapper = new ObjectMapper();
-
         for(Task task: tasks) {
-            os.write(mapper.writeValueAsString(task).getBytes());
+            printTask(task, os);
         }
 
+    }
+
+    public void printTask(Task task, OutputStream os) throws IOException {
+        os.write(mapper.writeValueAsString(task).getBytes());
     }
 }
