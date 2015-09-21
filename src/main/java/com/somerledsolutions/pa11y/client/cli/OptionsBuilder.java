@@ -46,6 +46,10 @@ public class OptionsBuilder {
     public static final String RUN_LONG_OPT = "run";
     public static final String TID_OPT = "tid";
     public static final String TID_LONG_OPT = "taskid";
+    public static final String GET_TASK_OPT = "g";
+    public static final String GET_TASK_LONG_OPT = "get";
+    public static final String LASTRES_OPT = "lr";
+    public static final String LASTRES_LONG_OPT = "lastres";
 
     public static Options buildHelpOptions() {
         Options options = new Options();
@@ -68,6 +72,7 @@ public class OptionsBuilder {
         options.addOption(getStandardOption());
         options.addOption(getLastResultOption());
         options.addOption(getTaskIdOption());
+        options.addOption(getRetrieveTaskOption());
 
         return options;
     }
@@ -127,14 +132,6 @@ public class OptionsBuilder {
                 .build();
     }
 
-    private static Option getLastResultOption() {
-        return Option.builder("lr")
-                .argName("Last result")
-                .longOpt("lastres")
-                .desc("Include the last_result property in the output")
-                .build();
-    }
-
     public static Options getAllOptions() {
         Options allOptions = new Options();
         Options helpOptions = buildHelpOptions();
@@ -167,6 +164,22 @@ public class OptionsBuilder {
                 .argName("Run")
                 .longOpt(RUN_LONG_OPT)
                 .desc("Run a task by ID, generating new results")
+                .build();
+    }
+
+    private static Option getRetrieveTaskOption() {
+        return Option.builder(GET_TASK_OPT)
+                .argName("Get")
+                .longOpt(GET_TASK_LONG_OPT)
+                .desc("Get a single task by ID")
+                .build();
+    }
+
+    private static Option getLastResultOption() {
+        return Option.builder(LASTRES_OPT)
+                .argName("Last result")
+                .longOpt(LASTRES_LONG_OPT)
+                .desc("Include the last_result property in the output")
                 .build();
     }
 }

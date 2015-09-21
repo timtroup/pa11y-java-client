@@ -85,9 +85,14 @@ public class Pa11yRestClientImpl implements Pa11yRestClient {
         Map<String, String> params = new HashMap<String, String>();
         params.put("host", url);
         params.put("id", taskId);
-        params.put("lastres", String.valueOf(lastres));
 
-        String getTaskUrl = "{host}/tasks/{id}?lastres={lastres}";
+        String getTaskUrl = "{host}/tasks/{id}";
+
+        if(lastres) {
+            getTaskUrl = getTaskUrl + "?lastres={lastres}";
+            params.put("lastres", "true");
+        }
+
         Task task = restTemplate.getForObject(getTaskUrl, Task.class, params);
         log.info(task.toString());
         return task;

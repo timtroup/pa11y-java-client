@@ -89,12 +89,24 @@ public class Application implements CommandLineRunner {
                 printListOfTasks(cl);
             } else if (cl.hasOption(OptionsBuilder.RUN_OPT)) {
                 runTask(cl);
+            } else if (cl.hasOption(OptionsBuilder.GET_TASK_OPT)) {
+                getTask(cl);
             }
         } catch (ParseException e) {
             log.error("Failed to parse comand line properties", e);
             printHelp();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void getTask(CommandLine cl) throws IOException {
+        if (optionsValidator.validateRunOptions(cl)) {
+            Task task = client.getTask(cl.getOptionValue(OptionsBuilder.TID_OPT),
+                    cl.getOptionValue(OptionsBuilder.URL_OPT),
+                    cl.hasOption(OptionsBuilder.LASTRES_OPT));
+            Pa11yPrinter printer = new Pa11yPrinter();
+            printer.printTask(task, System.out);
         }
     }
 

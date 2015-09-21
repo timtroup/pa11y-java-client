@@ -47,7 +47,7 @@ public class OptionsBuilderTest {
     public void testBuildPa11yOptions() throws Exception {
         Options options = OptionsBuilder.buildPa11yOptions();
 
-        assertEquals(8, options.getOptions().size());
+        assertEquals(9, options.getOptions().size());
 
         assertPa11yOptions(options);
 
@@ -62,7 +62,7 @@ public class OptionsBuilderTest {
     public void testGetAllOptions() throws Exception {
         Options options = OptionsBuilder.getAllOptions();
 
-        assertEquals(9, options.getOptions().size());
+        assertEquals(10, options.getOptions().size());
 
         assertHelpOption(options);
         assertPa11yOptions(options);
@@ -85,6 +85,7 @@ public class OptionsBuilderTest {
         assertLastResultOption(options);
         assertTaskIdOption(options);
         assertRunOption(options);
+        assertRetrieveTaskOption(options);
     }
 
     private void assertCreateOption(Options options) {
@@ -150,5 +151,13 @@ public class OptionsBuilderTest {
         assertEquals("Run", taskIdOption.getArgName());
         assertEquals("run", taskIdOption.getLongOpt());
         assertEquals("Run a task by ID, generating new results", taskIdOption.getDescription());
+    }
+
+    private void assertRetrieveTaskOption(Options options) {
+        Option taskIdOption = options.getOption("g");
+        assertEquals("g", taskIdOption.getOpt());
+        assertEquals("Get", taskIdOption.getArgName());
+        assertEquals("get", taskIdOption.getLongOpt());
+        assertEquals("Get a single task by ID", taskIdOption.getDescription());
     }
 }

@@ -68,19 +68,37 @@ public class Pa11yRestClientImplTest {
     }
 
     @Test
-    public void testGetTask() throws Exception {
+    public void testGetTaskWhenLastresOptionPresent() throws Exception {
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("host", "HOST");
         params.put("id", "taskId");
-        params.put("lastres", "false");
+        params.put("lastres", "true");
 
         Task task = new Task();
         when(restTemplate.getForObject(eq("{host}/tasks/{id}?lastres={lastres}"), eq(Task.class), eq(params))).thenReturn(task);
 
-        Task actualTask = testee.getTask("taskId", "HOST", false);
+        Task actualTask = testee.getTask("taskId", "HOST", true);
 
         verify(restTemplate, times(1)).getForObject(eq("{host}/tasks/{id}?lastres={lastres}"), eq(Task.class), eq(params));
+
+        assertSame(task, actualTask);
+
+    }
+
+    @Test
+    public void testGetTaskWhenLastresOptionMissing() throws Exception {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("host", "HOST");
+        params.put("id", "taskId");
+
+        Task task = new Task();
+        when(restTemplate.getForObject(eq("{host}/tasks/{id}"), eq(Task.class), eq(params))).thenReturn(task);
+
+        Task actualTask = testee.getTask("taskId", "HOST", false);
+
+        verify(restTemplate, times(1)).getForObject(eq("{host}/tasks/{id}"), eq(Task.class), eq(params));
 
         assertSame(task, actualTask);
 
