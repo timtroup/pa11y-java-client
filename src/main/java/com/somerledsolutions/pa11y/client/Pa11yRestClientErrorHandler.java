@@ -22,10 +22,9 @@
  * SOFTWARE.
  */
 
-package com.somerledsolutions.pa11y.client.model;
+package com.somerledsolutions.pa11y.client;
 
-/**
- * Created by troup on 16/09/15.
- */
-public class Annotation {
+import org.springframework.web.client.DefaultResponseErrorHandler;
+
+public class Pa11yRestClientErrorHandler extends DefaultResponseErrorHandler {
 }

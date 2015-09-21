@@ -9,7 +9,9 @@ public class Pa11yRestClientConfiguration {
 
     @Bean(name = "restTemplate")
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setErrorHandler(new Pa11yRestClientErrorHandler());
+        return restTemplate;
     }
 
 }
