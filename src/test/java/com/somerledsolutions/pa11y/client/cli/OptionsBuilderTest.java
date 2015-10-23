@@ -47,7 +47,7 @@ public class OptionsBuilderTest {
     public void testBuildPa11yOptions() throws Exception {
         Options options = OptionsBuilder.buildPa11yOptions();
 
-        assertEquals(9, options.getOptions().size());
+        assertEquals(10, options.getOptions().size());
 
         assertPa11yOptions(options);
 
@@ -56,13 +56,15 @@ public class OptionsBuilderTest {
         assertTrue(optionGroupNames.contains("c"));
         assertTrue(optionGroupNames.contains("l"));
         assertTrue(optionGroupNames.contains("r"));
+        assertTrue(optionGroupNames.contains("g"));
+        assertTrue(optionGroupNames.contains("d"));
     }
 
     @Test
     public void testGetAllOptions() throws Exception {
         Options options = OptionsBuilder.getAllOptions();
 
-        assertEquals(10, options.getOptions().size());
+        assertEquals(11, options.getOptions().size());
 
         assertHelpOption(options);
         assertPa11yOptions(options);
@@ -86,6 +88,7 @@ public class OptionsBuilderTest {
         assertTaskIdOption(options);
         assertRunOption(options);
         assertRetrieveTaskOption(options);
+        assertDeleteOption(options);
     }
 
     private void assertCreateOption(Options options) {
@@ -159,5 +162,13 @@ public class OptionsBuilderTest {
         assertEquals("Get", taskIdOption.getArgName());
         assertEquals("get", taskIdOption.getLongOpt());
         assertEquals("Get a single task by ID", taskIdOption.getDescription());
+    }
+
+    private void assertDeleteOption(Options options) {
+        Option deleteTaskOption = options.getOption("d");
+        assertEquals("d", deleteTaskOption.getOpt());
+        assertEquals("Delete", deleteTaskOption.getArgName());
+        assertEquals("delete", deleteTaskOption.getLongOpt());
+        assertEquals("Delete a task by ID", deleteTaskOption.getDescription());
     }
 }

@@ -74,7 +74,7 @@ public interface Pa11yRestClient {
      *
      * @param id the ID of the task to delete
      */
-    void deleteTask(String id);
+    void deleteTask(String id, String url);
 
     /**
      * Run a task by ID, generating new results

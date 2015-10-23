@@ -52,4 +52,8 @@ public class OptionsValidator {
     public boolean validateRunOptions(CommandLine commandLine) {
         return commandLine.hasOption("u") && commandLine.hasOption("tid");
     }
+
+    public boolean validateDeleteOptions(CommandLine commandLine) {
+        return commandLine.hasOption("u") && commandLine.hasOption("tid");
+    }
 }

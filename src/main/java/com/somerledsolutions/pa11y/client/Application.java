@@ -91,6 +91,8 @@ public class Application implements CommandLineRunner {
                 runTask(cl);
             } else if (cl.hasOption(OptionsBuilder.GET_TASK_OPT)) {
                 getTask(cl);
+            } else if (cl.hasOption(OptionsBuilder.DELETE_OPT)){
+                deleteTask(cl);
             }
         } catch (ParseException e) {
             log.error("Failed to parse comand line properties", e);
@@ -98,6 +100,15 @@ public class Application implements CommandLineRunner {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void deleteTask(CommandLine cl) {
+        if(optionsValidator.validateDeleteOptions(cl)){
+            client.deleteTask(cl.getOptionValue(OptionsBuilder.TID_OPT),
+            cl.getOptionValue(OptionsBuilder.URL_OPT));
+
+        }
+
     }
 
     private void getTask(CommandLine cl) throws IOException {

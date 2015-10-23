@@ -99,7 +99,15 @@ public class Pa11yRestClientImpl implements Pa11yRestClient {
     }
 
     @Override
-    public void deleteTask(String id) {
+    public void deleteTask(String id, String url) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("host", url);
+        params.put("id", id);
+
+        String deleteTaskUrl = "{host}/tasks/{id}";
+
+        restTemplate.delete(deleteTaskUrl, params);
 
     }
 

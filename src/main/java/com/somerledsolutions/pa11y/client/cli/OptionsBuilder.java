@@ -50,6 +50,8 @@ public class OptionsBuilder {
     public static final String GET_TASK_LONG_OPT = "get";
     public static final String LASTRES_OPT = "lr";
     public static final String LASTRES_LONG_OPT = "lastres";
+    public static final String DELETE_OPT = "d";
+    public static final String DELETE_LONG_OPT = "delete";
 
     public static Options buildHelpOptions() {
         Options options = new Options();
@@ -65,6 +67,8 @@ public class OptionsBuilder {
         mutuallyExclusiveOptions.addOption(getCreateTaskOption());
         mutuallyExclusiveOptions.addOption(getListTasksOption());
         mutuallyExclusiveOptions.addOption(getRunOption());
+        mutuallyExclusiveOptions.addOption(getRetrieveTaskOption());
+        mutuallyExclusiveOptions.addOption(getDeleteTaskOption());
 
         options.addOptionGroup(mutuallyExclusiveOptions);
         options.addOption(getNameOption());
@@ -72,7 +76,6 @@ public class OptionsBuilder {
         options.addOption(getStandardOption());
         options.addOption(getLastResultOption());
         options.addOption(getTaskIdOption());
-        options.addOption(getRetrieveTaskOption());
 
         return options;
     }
@@ -180,6 +183,14 @@ public class OptionsBuilder {
                 .argName("Last result")
                 .longOpt(LASTRES_LONG_OPT)
                 .desc("Include the last_result property in the output")
+                .build();
+    }
+
+    public static Option getDeleteTaskOption() {
+        return Option.builder(DELETE_OPT)
+                .argName("Delete")
+                .longOpt(DELETE_LONG_OPT)
+                .desc("Delete a task by ID")
                 .build();
     }
 }
